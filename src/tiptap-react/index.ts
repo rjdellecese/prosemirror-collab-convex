@@ -46,6 +46,7 @@ export const useCollabEditor = (
   const [areStepsInFlight, setAreStepsInFlight] = useState(false);
   const areStepsInFlightRef = useRef(areStepsInFlight);
   areStepsInFlightRef.current = areStepsInFlight;
+  console.log("areStepsInFlight", areStepsInFlightRef.current);
   const stepsSince = useQuery(
     getStepsSinceQueryName,
     docId,
@@ -84,7 +85,7 @@ export const useCollabEditor = (
   );
 
   useEffect(() => {
-    if (editor && !areStepsInFlight) {
+    if (editor) {
       sendSendableSteps({
         sendSteps,
         docId,
@@ -144,13 +145,13 @@ const sendSendableSteps = ({
     const sendableSteps = collab.sendableSteps(editorState);
     console.log("sendableSteps", sendableSteps);
     if (sendableSteps) {
+      setAreStepsInFlight(true);
       sendSteps(
         docId,
         clientId,
         sendableSteps.version,
         sendableSteps.steps.map((step) => JSON.stringify(step.toJSON()))
       ).then(() => setAreStepsInFlight(false));
-      setAreStepsInFlight(true);
     } else {
       return;
     }
