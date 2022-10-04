@@ -152,12 +152,19 @@ const getDocAndVersion = async (
 
 const createEmptyDoc =
   (prosemirrorSchema: ProseMirrorSchema) =>
-  async ({ db }: { db: DatabaseWriter }): Promise<Id<"docs">> =>
-    db.insert("docs", {
-      doc: JSON.stringify(
-        EditorState.create({ schema: prosemirrorSchema }).doc.toJSON()
-      ),
+  async ({
+    db,
+  }: {
+    db: DatabaseWriter;
+  }): Promise<{ id: Id<"docs">; doc: string; version: number }> => {
+    const doc = JSON.stringify(
+      EditorState.create({ schema: prosemirrorSchema }).doc.toJSON()
+    );
+    const id = await db.insert("docs", {
+      doc,
     });
+    return { id, doc, version: 0 };
+  };
 
 const getVersion = async (
   db: DatabaseReader,
