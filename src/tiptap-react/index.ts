@@ -23,7 +23,7 @@ export const useCollabEditor = (
     doc: string;
     version: number;
   },
-  // You can't pass `content` in here because you're already giving us the `doc`
+  // We omit `content` here because you're already giving us the `doc`
   editorOptions: Omit<EditorOptions, "content">,
   deps: DependencyList = []
 ): Editor | null => {
