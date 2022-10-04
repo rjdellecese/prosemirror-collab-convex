@@ -36,7 +36,7 @@ export const useCollabEditor = (
     version: number;
   },
   // We omit `content` here because you're already giving us the `doc`
-  editorOptions: Omit<EditorOptions, "content">,
+  editorOptions: Omit<Partial<EditorOptions>, "content"> = {},
   deps: DependencyList = []
 ): Editor | null => {
   const [clientId] = useState(() => crypto.randomUUID());
