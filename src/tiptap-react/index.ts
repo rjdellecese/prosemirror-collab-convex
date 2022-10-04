@@ -142,6 +142,7 @@ const sendSendableSteps = ({
     return;
   } else {
     const sendableSteps = collab.sendableSteps(editorState);
+    console.log("sendableSteps", sendableSteps);
     if (sendableSteps) {
       sendSteps(
         docId,
