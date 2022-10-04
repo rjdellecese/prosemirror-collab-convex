@@ -70,7 +70,7 @@ export const useCollabEditor = (
           sendSteps,
           docId,
           clientId,
-          areStepsInFlight: areStepsInFlightRef.current,
+          areStepsInFlightRef,
           setAreStepsInFlight,
           editorState: props.editor.state,
         });
@@ -89,7 +89,7 @@ export const useCollabEditor = (
         sendSteps,
         docId,
         clientId,
-        areStepsInFlight,
+        areStepsInFlightRef,
         setAreStepsInFlight,
         editorState: editor.state,
       });
@@ -127,18 +127,18 @@ const sendSendableSteps = ({
   sendSteps,
   docId,
   clientId,
-  areStepsInFlight,
+  areStepsInFlightRef,
   setAreStepsInFlight,
   editorState,
 }: {
   sendSteps: ApiFunction<"sendSteps">;
   docId: Id<"docs">;
   clientId: string;
-  areStepsInFlight: boolean;
+  areStepsInFlightRef: React.MutableRefObject<boolean>;
   setAreStepsInFlight: React.Dispatch<React.SetStateAction<boolean>>;
   editorState: EditorState;
 }) => {
-  if (areStepsInFlight) {
+  if (areStepsInFlightRef.current) {
     return;
   } else {
     const sendableSteps = collab.sendableSteps(editorState);
