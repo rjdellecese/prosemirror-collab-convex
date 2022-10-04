@@ -1,11 +1,25 @@
 import collab from "prosemirror-collab";
 import { EditorState } from "prosemirror-state";
-import { API, GetStepsSinceQuery, Id, SendStepsMutation } from "~convex";
-import { ReactMutation } from "convex/react";
+import { API, DatabaseReader, DatabaseWriter, functions, Id } from "~convex";
+import { ReactMutation, UseMutationForAPI } from "convex/react";
 import { DependencyList, useEffect, useRef, useState } from "react";
 import { EditorOptions, Extension } from "@tiptap/core";
 import { Editor, useEditor } from "@tiptap/react";
 import { Step } from "prosemirror-transform";
+
+// https://stackoverflow.com/a/63029283
+type DropFirst<T extends unknown[]> = T extends [any, ...infer U] ? U : never;
+
+type Functions = ReturnType<typeof functions>;
+type ApiFunction<Name extends keyof Functions> = Parameters<
+  Functions[Name]
+>[0]["db"] extends DatabaseWriter
+  ? (
+      ...args: DropFirst<Parameters<Functions[Name]>>
+    ) => ReturnType<Functions[Name]>
+  : (
+      ...args: DropFirst<Parameters<Functions[Name]>>
+    ) => Awaited<ReturnType<Functions[Name]>> | undefined;
 
 export const useCollabEditor = (
   {
@@ -15,10 +29,8 @@ export const useCollabEditor = (
     doc,
     version,
   }: {
-    sendSteps: ReactMutation<API, SendStepsMutation>;
-    getStepsSince: (
-      ...args: Parameters<GetStepsSinceQuery>
-    ) => ReturnType<GetStepsSinceQuery> | undefined;
+    sendSteps: ApiFunction<"sendSteps">;
+    getStepsSince: ApiFunction<"getStepsSince">;
     docId: Id<"docs">;
     doc: string;
     version: number;
@@ -111,7 +123,7 @@ const sendSendableSteps = ({
   setAreStepsInFlight,
   editorState,
 }: {
-  sendSteps: ReactMutation<API, SendStepsMutation>;
+  sendSteps: ApiFunction<"sendSteps">;
   docId: Id<"docs">;
   clientId: string;
   areStepsInFlight: boolean;

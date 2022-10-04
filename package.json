@@ -1,11 +1,14 @@
 {
   "name": "prosemirror-collab-convex",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "ProseMirror collaborative editing with Convex.",
   "source": "src/index.ts",
   "main": "dist/index.js",
   "module": "dist/module.js",
   "types": "dist/types.d.ts",
+  "files": [
+    "dist/**/*"
+  ],
   "scripts": {
     "watch": "parcel watch",
     "build": "parcel build",
@@ -20,7 +23,7 @@
   "peerDependencies": {
     "@tiptap/core": "^2.0.0-beta.199",
     "@tiptap/react": "^2.0.0-beta.199",
-    "convex": "0.1.10",
+    "convex": "0.2.0",
     "prosemirror-collab": "^1.3.0",
     "prosemirror-model": "^1.18.1",
     "prosemirror-state": "^1.4.1",
