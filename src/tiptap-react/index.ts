@@ -1,4 +1,4 @@
-import collab from "prosemirror-collab";
+import * as collab from "prosemirror-collab";
 import { EditorState } from "prosemirror-state";
 import { API, DatabaseReader, DatabaseWriter, functions, Id } from "~convex";
 import { ReactMutation, UseMutationForAPI } from "convex/react";
