@@ -84,7 +84,7 @@ export const useCollabEditor = (
   );
 
   useEffect(() => {
-    if (editor) {
+    if (editor && !areStepsInFlight) {
       sendSendableSteps({
         sendSteps,
         docId,
