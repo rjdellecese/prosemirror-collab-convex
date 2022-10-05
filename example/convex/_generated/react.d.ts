@@ -18,6 +18,7 @@ import type {
   UseMutationForAPI,
   UseConvexForAPI,
 } from "convex/react";
+import type * as collab from "../collab";
 
 /**
  * A type describing your app's public Convex API.
@@ -28,7 +29,9 @@ import type {
  * This type should be used with type-parameterized classes like
  * `ConvexReactClient` to create app-specific types.
  */
-export type ConvexAPI = ApiFromModules<{}>;
+export type ConvexAPI = ApiFromModules<{
+  collab: typeof collab;
+}>;
 
 /**
  * Load a reactive query within a React component.
